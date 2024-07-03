@@ -27,7 +27,10 @@ describe("tester API users", () => {
   beforeEach(() => {
     token = jwt.sign({ userId: USER_ID }, config.secretJwtToken);
     // mongoose.Query.prototype.find = jest.fn().mockResolvedValue(MOCK_DATA);
+
     mockingoose(User).toReturn(MOCK_DATA, "find");
+    //Comme j'ai changé le middleware d'authentification, j'ai mocké la méthode get de usersService pour qu'il me retourne un utilisateur, sinon les tests ne passent pas
+    jest.spyOn(usersService, 'get').mockResolvedValue(MOCK_DATA);
     mockingoose(User).toReturn(MOCK_DATA_CREATED, "save");
   });
 
